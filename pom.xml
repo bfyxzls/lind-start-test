@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lind</groupId>
+    <artifactId>lind-start-test</artifactId>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>a-start-micro-service/a-start-gateway</module>
+        <module>a-start-micro-service/a-start-oauth</module>
+        <module>a-start-hot-deployment/a-start-hot-dependency</module>
+        <module>a-start-hot-deployment/a-start-hot-deploy</module>
+        <module>a-start-hot-deployment/a-start-hot-interface</module>
+        <module>a-start-activiti</module>
+        <module>a-start-http2</module>
+        <module>a-start-kafka-stream</module>
+    </modules>
+
+    <properties>
+        <skipTests>true</skipTests>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+        <!-- Maven Plugin Versions -->
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <!-- 部署插件-->
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <!-- 执行测试用例的插件 -->
+        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+        <!-- 打包时同时打源代码插件 -->
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <!-- javadoc注释插件 -->
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <!-- jdk版本 1.8有一些新的语法 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- 跳过测试用例 -->
+        <skipTests>true</skipTests>
+        <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
+        <spring-boot-dependencies.version>2.3.0.RELEASE</spring-boot-dependencies.version>
+        <spring-cloud-alibaba-dependencies.version>2.2.1.RELEASE</spring-cloud-alibaba-dependencies.version>
+        <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <guava.version>28.2-jre</guava.version>
+        <mysql.drive.version>8.0.17</mysql.drive.version>
+        <HikariCP.version>3.4.2</HikariCP.version>
+        <mybatis-plus-boot-starter.version>3.3.0</mybatis-plus-boot-starter.version>
+        <fastjson.version>1.2.69</fastjson.version>
+        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <httpclient.version>4.5.12</httpclient.version>
+        <feign-httpclient.version>11.0</feign-httpclient.version>
+        <swagger.fox.version>2.9.2</swagger.fox.version>
+        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
+        <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
+        <commons-lang3-version>3.10</commons-lang3-version>
+        <!-- 在官方的文档里面，规定了2.2.6的jedis版本就是3.1.0,3.1.0会有连接池问题 -->
+        <jedis-version>2.9.0</jedis-version>
+        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+        <maven.sevntu.checkstyle.plugin.version>1.37.1</maven.sevntu.checkstyle.plugin.version>
+        <maven.sevntu-checkstyle-check.checkstyle.version>8.29</maven.sevntu-checkstyle-check.checkstyle.version>
+        <!-- jackson与springboot版本有着密切关系， springboot2.3.0以上的版本jackson需要2.11.2-->
+        <jackson.verson>2.11.2</jackson.verson>
+        <!-- mvn site时跳过包检查，加快构建速度-->
+        <dependency.locations.enabled>false</dependency.locations.enabled>
+        <cn.hutool.version>5.5.5</cn.hutool.version>
+    </properties>
+
+    <!-- 公用配置管理 -->
+    <dependencies>
+        <!-- Generating Your Own Metadata by Using the Annotation Processor -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-configuration-processor</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <!-- optional为true时子项目不会强制以来这个lombok，为false时（默认值）子项目会直接依赖父项目的lombok-->
+            <!-- <optional>true</optional>-->
+            <version>1.18.12</version>
+        </dependency>
+    </dependencies>
+    <!-- maven依赖版本统一，子工程不需要声明包版本 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!--spring boot 版本-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--阿里巴巴组件-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--spring cloud 版本-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Boot Web 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                         </dependency>
+
+
+            <!-- Google 编码助手 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.verson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.verson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.verson}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>2.8.0</version>
+            </dependency>
+
+            <!-- Mysql 驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.drive.version}</version>
+            </dependency>
+
+
+            <!-- HikariCP 连接池 -->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${HikariCP.version}</version>
+            </dependency>
+
+            <!-- MyBatis 增强工具 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+
+            <!-- Alibaba json解析器 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+
+            <!-- 接口文档 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+
+
+            <!-- 接口文档 UI -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger-ui.version}</version>
+            </dependency>
+
+            <!-- HTTP 客户端请求 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!-- Feign 客户端请求 -->
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-httpclient</artifactId>
+                <version>${feign-httpclient.version}</version>
+            </dependency>
+            <!-- Apache Commons-lang3工具包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3-version}</version>
+            </dependency>
+
+            <!-- redis客户端 -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis-version}</version>
+            </dependency>
+
+            <!-- Jasypt加密 -->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${cn.hutool.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

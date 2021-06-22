@@ -1,0 +1,11 @@
+server.port: 8082
+spring:
+  kafka:
+    bootstrap-servers: 192.168.4.26:9092
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      missing-topics-fatal: false
+    consumer:
+      group-id: default
+      auto-offset-reset: earliest #生产环境配置latest，只获取最新消息

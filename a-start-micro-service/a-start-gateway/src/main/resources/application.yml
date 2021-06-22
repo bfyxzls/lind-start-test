@@ -1,0 +1,17 @@
+server.port: 8084
+spring:
+  application.name: lind-gateway
+  profiles.active: dev
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: lind-start-oauth
+          uri: lb://lind-start-oauth
+          predicates:
+            - Path= /oauth/**
+          filters:
+            - StripPrefix=1
